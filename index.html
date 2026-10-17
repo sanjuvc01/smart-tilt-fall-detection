@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="IoT-Based Smart Tilt–Fall Detection System using STM32 Blue Pill, MPU-6050 and ESP8266 ESP-01.">
+  <title>Smart Tilt–Fall Detection | Project HQ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#home" aria-label="Project home">
+      <span class="brand-mark">⌁</span><span>PROJECT<span class="accent"> HQ</span></span>
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+    <nav id="mainNav">
+      <a href="#overview">Overview</a><a href="#architecture">Architecture</a><a href="#hardware">Hardware</a><a href="#simulation">Simulation</a><a href="#roadmap">Roadmap</a>
+    </nav>
+    <a class="top-cta" href="#project-status">Project status <span>↗</span></a>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> ELECTRONICS • EMBEDDED • IoT</div>
+        <h1>Smart Tilt–Fall<br><span class="accent">Detection System</span></h1>
+        <p class="hero-lead">An assistive-safety prototype that detects abnormal inclination, triggers a local buzzer, and is designed to send status updates over Wi-Fi for remote monitoring.</p>
+        <div class="hero-tags"><span>STM32 Blue Pill</span><span>MPU-6050</span><span>ESP8266 ESP-01</span></div>
+        <div class="hero-actions"><a class="button primary" href="#architecture">Explore the system <span>↓</span></a><a class="button secondary" href="#roadmap">Build roadmap</a></div>
+        <p class="small-note">Student prototype · Work in progress · Not a certified medical or wheelchair safety device</p>
+      </div>
+      <div class="hero-visual" aria-label="Simplified system diagram">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="chip chip-main"><span class="chip-icon">▦</span><strong>STM32</strong><small>Blue Pill MCU</small><span class="chip-pin"></span></div>
+        <div class="node node-sensor"><span>⌁</span><strong>MPU-6050</strong><small>Motion sensor</small></div>
+        <div class="node node-wifi"><span>◔</span><strong>ESP-01</strong><small>Wi-Fi link</small></div>
+        <div class="node node-buzzer"><span>◖</span><strong>Buzzer</strong><small>Local alert</small></div>
+        <div class="line line-sensor"></div><div class="line line-wifi"></div><div class="line line-buzzer"></div>
+        <div class="hero-caption"><span class="live-dot"></span> SYSTEM CONCEPT / NOT TO SCALE</div>
+      </div>
+    </section>
+
+    <section class="stats" id="project-status">
+      <div class="stat"><span class="stat-icon">⌘</span><div><strong>3 core modules</strong><small>Sense · Process · Alert</small></div></div>
+      <div class="stat"><span class="stat-icon">⌁</span><div><strong>Motion-based</strong><small>Accelerometer + gyroscope</small></div></div>
+      <div class="stat"><span class="stat-icon">◉</span><div><strong>IoT planned</strong><small>ESP8266 + cloud status</small></div></div>
+      <div class="stat"><span class="stat-icon">⚙</span><div><strong>In development</strong><small>Simulation and firmware setup</small></div></div>
+    </section>
+
+    <section class="section" id="overview">
+      <div class="section-heading"><div><div class="eyebrow">01 / PROJECT BRIEF</div><h2>What we're building</h2></div><p>A modular prototype for demonstrating sensor-based tilt detection and remote status reporting.</p></div>
+      <div class="overview-grid">
+        <article class="panel overview-main"><div class="panel-icon">⌁</div><h3>The problem</h3><p>Unexpected wheelchair tilt or tipping can create a safety risk. A nearby warning and remote status update may help a caregiver become aware of a possible event.</p><h3>Our approach</h3><p>The MPU-6050 measures acceleration and angular motion. The STM32 evaluates sensor readings, drives a buzzer through a suitable driver, and exchanges status with the ESP8266 over UART.</p></article>
+        <article class="panel objective"><span class="mini-label">PRIMARY OBJECTIVE</span><div class="big-symbol">◎</div><h3>Detect → Decide → Alert</h3><p>Start with reliable local detection. Add Wi-Fi and cloud reporting only after the sensing and alarm stages work.</p><div class="progress-label"><span>Development approach</span><strong>Stage-by-stage</strong></div><div class="progress-track"><span style="width:30%"></span></div><small class="muted">Progress shown is a planning indicator, not a test result.</small></article>
+      </div>
+    </section>
+
+    <section class="section" id="architecture">
+      <div class="section-heading"><div><div class="eyebrow">02 / SYSTEM ARCHITECTURE</div><h2>How the modules connect</h2></div><p>Keep the sensor and alert path independent from cloud availability.</p></div>
+      <div class="architecture panel">
+        <div class="arch-row">
+          <div class="arch-card sensor-card"><span class="arch-icon">⌁</span><strong>MPU-6050</strong><small>Measures motion over I²C</small><em>INPUT</em></div>
+          <span class="arrow">→</span>
+          <div class="arch-card mcu-card"><span class="arch-icon">▦</span><strong>STM32 Blue Pill</strong><small>Filters readings and detects tilt</small><em>CONTROL</em></div>
+          <span class="arrow">→</span>
+          <div class="arch-card alert-card"><span class="arch-icon">◖</span><strong>Buzzer driver</strong><small>Local audible warning</small><em>ALERT</em></div>
+        </div>
+        <div class="branch-label"><span></span>PARALLEL COMMUNICATION PATH<span></span></div>
+        <div class="arch-row arch-row-bottom">
+          <div class="arch-card mcu-card"><span class="arch-icon">▦</span><strong>STM32 UART</strong><small>Serial status message</small></div><span class="arrow">→</span>
+          <div class="arch-card wifi-card"><span class="arch-icon">⌁</span><strong>ESP8266 ESP-01</strong><small>2.4 GHz Wi-Fi</small></div><span class="arrow">→</span>
+          <div class="arch-card cloud-card"><span class="arch-icon">☁</span><strong>Firebase / Web UI</strong><small>Remote status (planned)</small></div>
+        </div>
+        <div class="arch-note"><span>!</span><p><strong>Design principle:</strong> the local buzzer should work even if Wi-Fi or the cloud is unavailable. This is a prototype concept, not a safety-certified system.</p></div>
+      </div>
+    </section>
+
+    <section class="section" id="hardware">
+      <div class="section-heading"><div><div class="eyebrow">03 / HARDWARE INVENTORY</div><h2>Parts on the bench</h2></div><p>Current hardware identified from the project setup. Verify board markings and module pin labels before wiring.</p></div>
+      <div class="hardware-grid">
+        <article class="hardware-card"><div class="part-art part-mcu"><span>STM32</span><b>▦</b></div><div class="hardware-body"><div class="part-top"><span class="part-type">CONTROLLER</span><span class="status-pill">Owned</span></div><h3>STM32 Blue Pill</h3><p>STM32F103C8T6-class board; processes sensor data and controls outputs.</p><div class="pin-note"><b>Planned interface</b><span>I²C + UART + GPIO</span></div></div></article>
+        <article class="hardware-card"><div class="part-art part-imu"><span>MPU</span><b>⌁</b></div><div class="hardware-body"><div class="part-top"><span class="part-type">MOTION SENSOR</span><span class="status-pill">Owned</span></div><h3>MPU-6050 / GY-521</h3><p>3-axis accelerometer and 3-axis gyroscope for orientation and motion estimates.</p><div class="pin-note"><b>Planned interface</b><span>I²C · PB6 / PB7</span></div></div></article>
+        <article class="hardware-card"><div class="part-art part-wifi"><span>ESP-01</span><b>⌁</b></div><div class="hardware-body"><div class="part-top"><span class="part-type">WIRELESS</span><span class="status-pill">Owned</span></div><h3>ESP8266 ESP-01</h3><p>Provides Wi-Fi connectivity; requires a stable 3.3 V supply and correct UART logic levels.</p><div class="pin-note"><b>Planned interface</b><span>UART · PA9 / PA10</span></div></div></article>
+        <article class="hardware-card"><div class="part-art part-buzzer"><span>ALERT</span><b>◖</b></div><div class="hardware-body"><div class="part-top"><span class="part-type">LOCAL ALERT</span><span class="status-pill">Owned</span></div><h3>Buzzer</h3><p>Audible alert driven from a GPIO through a transistor if the buzzer's current requires it.</p><div class="pin-note"><b>Planned interface</b><span>GPIO · driver stage</span></div></div></article>
+      </div>
+      <div class="warning-strip"><span>⚠</span><p><strong>Power note:</strong> ESP-01 uses 3.3 V logic and can draw brief high current. Do not power it directly from 5 V or assume the Blue Pill's 3.3 V pin can supply enough current. Share ground across modules.</p></div>
+    </section>
+
+    <section class="section" id="simulation">
+      <div class="section-heading"><div><div class="eyebrow">04 / SIMULATION PLAN</div><h2>Proteus build strategy</h2></div><p>Validate the design in small, testable steps instead of trying to simulate every module at once.</p></div>
+      <div class="simulation-layout">
+        <div class="steps panel">
+          <div class="step"><div class="step-num">01</div><div><h3>Confirm the firmware toolchain</h3><p>Proteus 9.1 Demonstration was identified during setup. The Arduino-for-STM32 compiler appeared unconfigured, so confirm installation and model support first.</p><span class="step-state pending">NEXT CHECK</span></div></div>
+          <div class="step"><div class="step-num">02</div><div><h3>Prove a GPIO output</h3><p>Run a minimal LED or digital-output test on the Blue Pill model before adding sensor logic.</p><span class="step-state">NOT YET VERIFIED</span></div></div>
+          <div class="step"><div class="step-num">03</div><div><h3>Test detection and buzzer</h3><p>If MPU-6050 simulation is unavailable, use a switch or test input to exercise the alarm logic. This tests logic, not real motion sensing.</p><span class="step-state">PLANNED</span></div></div>
+          <div class="step"><div class="step-num">04</div><div><h3>Test UART and real Wi-Fi separately</h3><p>Use a virtual terminal to check serial messages; verify ESP8266 and Firebase on physical hardware if the Proteus model cannot emulate networking.</p><span class="step-state">PLANNED</span></div></div>
+        </div>
+        <aside class="panel simulation-side"><div class="side-icon">⌘</div><span class="mini-label">SIMULATION REALITY CHECK</span><h3>What Proteus may not model</h3><ul><li>Exact MPU-6050 behaviour, unless a compatible simulation model is installed.</li><li>ESP-01 firmware execution and real 2.4 GHz Wi-Fi.</li><li>Firebase cloud access from inside the schematic.</li></ul><div class="side-divider"></div><h3>Fallback plan</h3><p>Simulate GPIO, threshold logic, buzzer and serial messages where supported. Test sensor readings and cloud updates on the real boards.</p></aside>
+      </div>
+    </section>
+
+    <section class="section" id="roadmap">
+      <div class="section-heading"><div><div class="eyebrow">05 / DEVELOPMENT ROADMAP</div><h2>Mission checklist</h2></div><p>Tick each task as you complete it. Your checklist saves in this browser.</p></div>
+      <div class="roadmap panel">
+        <div class="roadmap-head"><div><span class="mini-label">PROJECT MILESTONES</span><h3 id="completionText">0 of 8 complete</h3></div><div class="circle-progress" id="circleProgress"><span id="completionPercent">0%</span></div></div>
+        <div class="progress-track roadmap-track"><span id="roadmapBar" style="width:0%"></span></div>
+        <div class="checklist" id="checklist">
+          <label class="check-item"><input type="checkbox" data-task="0"><span class="checkmark"></span><span><b>Confirm Proteus compiler and Blue Pill model</b><small>Check compiler setup and model availability.</small></span><em>SIMULATION</em></label>
+          <label class="check-item"><input type="checkbox" data-task="1"><span class="checkmark"></span><span><b>Run a basic STM32 GPIO test</b><small>Prove firmware can execute in the simulation.</small></span><em>FIRMWARE</em></label>
+          <label class="check-item"><input type="checkbox" data-task="2"><span class="checkmark"></span><span><b>Read MPU-6050 over I²C</b><small>Verify sensor ID and raw measurements.</small></span><em>SENSING</em></label>
+          <label class="check-item"><input type="checkbox" data-task="3"><span class="checkmark"></span><span><b>Set and calibrate tilt threshold</b><small>Reduce false triggers using stable test positions.</small></span><em>ALGORITHM</em></label>
+          <label class="check-item"><input type="checkbox" data-task="4"><span class="checkmark"></span><span><b>Drive buzzer through a safe output stage</b><small>Test local warning independently of Wi-Fi.</small></span><em>ALERT</em></label>
+          <label class="check-item"><input type="checkbox" data-task="5"><span class="checkmark"></span><span><b>Exchange UART messages with ESP-01</b><small>Check TX/RX crossover and 3.3 V logic.</small></span><em>CONNECTIVITY</em></label>
+          <label class="check-item"><input type="checkbox" data-task="6"><span class="checkmark"></span><span><b>Publish status to Firebase</b><small>Confirm network and cloud updates on real hardware.</small></span><em>IoT</em></label>
+          <label class="check-item"><input type="checkbox" data-task="7"><span class="checkmark"></span><span><b>Document test results and limitations</b><small>Add wiring photos, code, and observed results.</small></span><em>DOCUMENTATION</em></label>
+        </div>
+        <button class="reset-button" id="resetTasks" type="button">Reset checklist</button>
+      </div>
+    </section>
+
+    <section class="section" id="connections">
+      <div class="section-heading"><div><div class="eyebrow">06 / PROPOSED CONNECTIONS</div><h2>Pin map reference</h2></div><p>Proposed wiring for the physical prototype. Confirm firmware configuration and module pin labels before applying power.</p></div>
+      <div class="table-wrap panel"><table><thead><tr><th>Module signal</th><th>STM32 Blue Pill pin</th><th>Interface / note</th></tr></thead><tbody>
+        <tr><td>MPU-6050 VCC</td><td>3.3 V</td><td>Check breakout-board voltage requirements</td></tr>
+        <tr><td>MPU-6050 GND</td><td>GND</td><td>Common ground</td></tr>
+        <tr><td>MPU-6050 SCL</td><td>PB6</td><td>I²C1 SCL (proposed)</td></tr>
+        <tr><td>MPU-6050 SDA</td><td>PB7</td><td>I²C1 SDA (proposed)</td></tr>
+        <tr><td>ESP-01 TXD</td><td>PA10</td><td>USART1 RX</td></tr>
+        <tr><td>ESP-01 RXD</td><td>PA9</td><td>USART1 TX; ensure 3.3 V-compatible signal</td></tr>
+        <tr><td>Buzzer driver input</td><td>PA8</td><td>Use transistor driver if required</td></tr>
+        <tr><td>All module grounds</td><td>GND</td><td>Must be connected together</td></tr>
+      </tbody></table></div>
+      <p class="table-footnote">Pin mapping is a starting proposal, not a verified schematic. I²C alternate-function setup, pull-ups, ESP-01 boot-strapping pins, power integrity, and buzzer current must be checked before assembly.</p>
+    </section>
+
+    <section class="final-cta">
+      <div class="final-symbol">⌁</div><div><div class="eyebrow">BUILD • TEST • DOCUMENT</div><h2>From schematic to working prototype.</h2><p>Keep every claim honest: record what has been simulated, what has been tested on hardware, and what is still planned.</p></div><a class="button primary" href="#roadmap">Update mission checklist ↗</a>
+    </section>
+  </main>
+
+  <footer><a class="brand footer-brand" href="#home"><span class="brand-mark">⌁</span><span>PROJECT<span class="accent"> HQ</span></span></a><p>IoT-Based Smart Tilt–Fall Detection System · Student engineering project</p><p class="footer-note">Prototype for learning and demonstration only. Not a certified safety device.</p><a class="back-top" href="#home">Back to top ↑</a></footer>
+  <script src="script.js"></script>
+</body>
+</html>
